@@ -56,12 +56,12 @@
                                             <p class="text-sm font-weight-bold mb-0">{{ $u->lastname }}</p>
                                         </td>
                                         <td class="align-middle text-center text-sm">
-                                            <p class="text-sm font-weight-bold mb-0">{{ route('user-update', $u->id) }}</p>
+                                            <p class="text-sm font-weight-bold mb-0">{{ route('update-user', $u->id) }}</p>
                                         </td>
                                         <td class="align-middle text-end">
                                             <div class="d-flex px-3 py-1 justify-content-center align-items-center"> 
 
-                                                <form action="/user-update/{{ $u->id }}" method="post">
+                                                <form action="/update-user/{{ $u->id }}" method="post">
                                                     @csrf
                                                     @method('get')
                                                     <button type="submit" class="btn btn-success m-l-1" >Edit</button>
@@ -70,8 +70,8 @@
                                                     @csrf
                                                     @method('delete')
                                                     <button type="submit" class="btn btn-danger" onclick="delete_item()">Delete</button>
+
                                                 </form>
-                                                
                                             </div>
                                         </td>
                                     </tr>

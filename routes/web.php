@@ -56,11 +56,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/user-management', [UserManagementController::class, 'show'])->name('user-management');
 	Route::get('/add-user', [UserManagementController::class, 'show_add'])->name('user-management.show-add-form');
 	Route::post('/add-user', [UserManagementController::class, 'add'])->name('user-management.add');
-	//Route::get('/update-user/{id}', [UserManagementController::class, 'show_update'])->name('user-management.show-update-form');
-	Route::get('/user-update/{id}', function ($id) {
-		$user = User::find($id);
-        return view('pages.update-user')->with(['user' => $user]);
-	})->name('user-update');
+	Route::get('/update-user/{id}', [UserManagementController::class, 'show_update'])->name('update-user');
 	Route::put('/update-user',[UserManagementController::class, 'update_user']);
 	Route::delete('/delete-user/{id}',[UserManagementController::class, 'delete_user']);
 

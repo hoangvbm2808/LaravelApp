@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Password;
 
@@ -25,15 +27,30 @@ class LoginController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
+        $errMsg = "";
 
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        $user = User::where('email', '=', $request->input('email'))->first();
+        if($user != null && Hash::check($request->input('password'), $user->password)) {
+            Auth::attempt(['email' => $request->email, 'password' => $request->password]);
             $request->session()->regenerate();
 
             return redirect()->intended('dashboard');
+        } 
+        if($user == null) { 
+            $errMsg = "User null";
+        } 
+        if (!Hash::check($request->input('password'), $user->password)) {
+            $errMsg = "Password is incorrect";
         }
 
+        // if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        //     $request->session()->regenerate();
+
+        //     return redirect()->intended('dashboard');
+        // }
+
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => $errMsg,
         ]);
     }
 

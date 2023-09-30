@@ -48,9 +48,9 @@ class UserManagementController extends Controller
         return back()->with('succes', 'User succesfully added');
     }
 
-    public function show_update() {
-        
-        return view('pages.update-user');
+    public function show_update($id) {
+        $user = User::find($id);
+        return view('pages.update-user')->with(['user' => $user]);
     }
 
     public function update_user(Request $request) {
@@ -72,40 +72,37 @@ class UserManagementController extends Controller
 
         $user = User::where('id', '=', $id)->first();
 
-        if ($user->password == $request->input('password')) {
-            $user->update([
-                'username' => $request->input('username'),
-                'email' => $request->input('email'),
-                'firstname' => $request->input('firstname'),
-                'lastname' => $request->input('lastname'),
-                'address' => $request->input('address'),
-                'city' => $request->input('city'),
-                'country' => $request->input('country'),
-                'postal' => $request->input('postal'),
-                'about' => $request->input('about'),
-            ]);
-        } else {
-            $user->update([
-                'username' => $request->input('username'),
-                'email' => $request->input('email'),
-                // 'password' => bcrypt($request->input('password')),
-                'firstname' => $request->input('firstname'),
-                'lastname' => $request->input('lastname'),
-                'address' => $request->input('address'),
-                'city' => $request->input('city'),
-                'country' => $request->input('country'),
-                'postal' => $request->input('postal'),
-                'about' => $request->input('about'),
-            ]); 
-            if (Hash::check($request->input('password'), bcrypt($request->input('password')))) {
-                $boolean = "true";
-            } else {
-                $boolean = "false";
-            }
+        // if ($user->password == $request->input('password')) {
+        //     $user->update([
+        //         'username' => $request->input('username'),
+        //         'email' => $request->input('email'),
+        //         'firstname' => $request->input('firstname'),
+        //         'lastname' => $request->input('lastname'),
+        //         'address' => $request->input('address'),
+        //         'city' => $request->input('city'),
+        //         'country' => $request->input('country'),
+        //         'postal' => $request->input('postal'),
+        //         'about' => $request->input('about'),
+        //     ]);
+        // } else {
+        //     $user->update([
+        //         'username' => $request->input('username'),
+        //         'email' => $request->input('email'),
+        //         'password' => bcrypt($request->input('password')),
+        //         'firstname' => $request->input('firstname'),
+        //         'lastname' => $request->input('lastname'),
+        //         'address' => $request->input('address'),
+        //         'city' => $request->input('city'),
+        //         'country' => $request->input('country'),
+        //         'postal' => $request->input('postal'),
+        //         'about' => $request->input('about'),
+        //     ]); 
             
-        }
-        
+           
+        // }
 
+        $password = $request->input('password');
+        dd(Hash::check($password,  bcrypt($password)));
         
 
         if ($user != null) {
